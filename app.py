@@ -5,6 +5,9 @@ from fastapi import Request
 from fastapi.responses import Response
 from fastapi.templating import Jinja2Templates
 import pathlib
+
+
+
 app = FastAPI()
 templates = Jinja2Templates(pathlib.Path(__file__).parent / 'templates')
 # Hier erstellen wir eine Socket.IO-Instanz und verknüpfen sie mit unserer FastAPI-App.
@@ -21,22 +24,7 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-# Hier erstellen wir eine einfache Socket.IO-Manager-Klasse, um die Verbindungen zu verwalten.
-class ConnectionManager:
-    def __init__(self):
-        self.active_connections = set()
 
-    async def connect(self, sid: str, websocket: WebSocket):
-        await websocket.accept()
-        self.active_connections.add(websocket)
-
-    def disconnect(self, sid: str, websocket: WebSocket):
-        self.active_connections.remove(websocket)
-
-    async def send_message(self, message: str, websocket: WebSocket):
-        await websocket.send_text(message)
-
-manager = ConnectionManager()
 
 @app.get('/')
 async def home(request: Request):
