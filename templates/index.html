@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Socket.IO Client</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.1.3/socket.io.js"></script>
+    <script type="text/javascript">
+        const socket = io("ws://localhost:8000", { path: "/ws/socket.io/", transports: ['websocket', 'polling']});
+
+        socket.on('connect', () => {
+            console.log('Verbunden');
+        });
+
+        socket.on('disconnect', () => {
+            console.log('Getrennt');
+        });
+
+        function sendmy (){
+            const message = document.getElementById('messageInput').value;
+            socket.emit('message', message);
+        };
+
+        socket.on('message', (data) => {
+            const messageContainer = document.getElementById('messageContainer');
+            messageContainer.innerHTML += `<p>${data}</p>`;
+        });
+    </script>
+</head>
+<body>
+    <h1>Socket.IO Client</h1>
+    <input type="text" id="messageInput" placeholder="Nachricht eingeben">
+    <button id="sendButton" onclick="sendmy()">Senden</button>
+    <div id="messageContainer"></div>
+</body>
+</html>
