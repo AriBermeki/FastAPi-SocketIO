@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en">
+ 
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hello World</title>
+    <script src="https://unpkg.com/react@latest/umd/react.development.js" crossorigin="anonymous"></script>
+    <script src="https://unpkg.com/react-dom@latest/umd/react-dom.development.js"></script>
+    <script src="https://unpkg.com/babel-standalone@latest/babel.min.js" crossorigin="anonymous"></script>
+ 
+    <!-- Ant Design Components and Icons -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/antd/4.18.5/antd.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/ant-design-icons/4.7.0/index.umd.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/antd/4.18.5/antd.min.css" />
+</head>
+ 
+<body>
+    <div id="root"></div>
+    <script type="text/babel">
+        const { Space, Input, Button, Layout, InputNumber, Checkbox, Slider, Typography } = antd;
+        const {TextArea}= Input
+        const {Text}= Typography
+        const { Header, Content, Sider } = Layout;
+        const { Html5Outlined, EditOutlined } = icons;
+
+        const convertJsonToAntdUI = (jsonObject) => {
+        const { component, content, ...rest } = jsonObject;
+            
+
+            switch (component) {
+                case 'Layout':
+                    return (
+                        <Layout key={rest.key} {...rest}>
+                        {content.map((child) => convertJsonToAntdUI(child))}
+                        </Layout>
+                    );
+                case 'Text':
+                    return (
+                        <Text key={rest.key} {...rest}>
+                        {content}
+                        </Text>
+                    );
+                case 'Header':
+                return (
+                    <Header key={rest.key} {...rest}>
+                    {content.map((child) => convertJsonToAntdUI(child))}
+                    </Header>
+                );
+                case 'Sider':
+                return (
+                    <Sider key={rest.key} {...rest}>
+                    {content.map((child) => convertJsonToAntdUI(child))}
+                    </Sider>
+                );
+                case 'Content':
+                return (
+                    <Content key={rest.key} {...rest}>
+                    {content.map((child) => convertJsonToAntdUI(child))}
+                    </Content>
+                );
+                case 'Button':
+                return <Button key={rest.key} {...rest}>{rest.label}</Button>;
+                case 'InputNumber':
+                return <InputNumber key={rest.key} {...rest} />;
+                case 'Checkbox':
+                return <Checkbox key={rest.key} {...rest} />;
+                case 'TextArea':
+                return <TextArea key={rest.key} {...rest} />;
+                case 'Slider':
+                return <Slider key={rest.key} {...rest} />;
+                case 'Text':
+                return <span key={rest.key}>{rest.content}</span>;
+                default:
+                return null;
+            }
+            if(typeof component ==='string'){
+                return component
+            }
+            
+        };
+
+        const App = () => {
+        const jsonExample =  {
+            "content": [
+                {
+                "content": [
+                    {
+                    "content": "Click",
+                    "key": "2e4b5ac1-b682-4686-a90b-cf1f2ea01f9e",
+                    "component": "Text",
+                    "style":{'color':'white'}
+                    }
+                ],
+                "hasSider": false,
+                "key": "6e3363af-965e-4ec7-97a3-ae90b702850c",
+                "component": "Header"
+                },
+                {
+                "content": [
+                    {
+                    "content": [
+                        
+                        {
+                        "type": "primary",
+                        "label": "Click",
+                        "key": "7ba08982-5528-4f35-ab6d-4ceee5714c34",
+                        "component": "Button"
+                        },
+                        {
+                        "key": "83df7d0b-87d2-4b41-8932-fc185456d39d",
+                        "component": "InputNumber"
+                        }
+                    ],
+                    "key": "7496cb40-9ef4-4a8b-9b26-bdb2aed8cf5f",
+                    "component": "Sider"
+                    },
+                    {
+                    "content": [
+                        {
+                        "key": "c3c09bee-a195-408a-b82d-00d75e475a51",
+                        "component": "Checkbox"
+                        },
+                        {
+                        "key": "ecb3f246-3916-47d1-aa89-a8ba1fee2742",
+                        "component": "TextArea"
+                        },
+                        {
+                        "key": "9444075d-862c-4101-8926-92fea4853621",
+                        "component": "Slider"
+                        }
+                    ],
+                    "key": "712021c2-0f90-4e05-bd99-3229287a5ba7",
+                    "component": "Content"
+                    }
+                ],
+                "key": "a1e52fbb-89ac-4839-b44c-d5c8a50895ff",
+                "component": "Layout"
+                }
+            ],
+            "key": "7ddf7f39-3c7d-453f-94cc-1da100e02cf7",
+            "component": "Layout"
+        }// Ihr JSON-Objekt hier einfügen
+
+        return <div>{convertJsonToAntdUI(jsonExample)}</div>;
+        };
+
+
+
+        ReactDOM.render(
+            <App />,
+            document.querySelector('#root'),
+        );
+    </script>
+</body>
+ 
+</html>
