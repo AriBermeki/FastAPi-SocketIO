@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hello World</title>
+    <script src="https://unpkg.com/react@latest/umd/react.development.js" crossorigin="anonymous"></script>
+    <script src="https://unpkg.com/react-dom@latest/umd/react-dom.development.js"></script>
+    <script src="https://unpkg.com/babel-standalone@latest/babel.min.js" crossorigin="anonymous"></script>
+ 
+    <!-- Ant Design Components and Icons -->
+    <script src="https://cdn.jsdelivr.net/npm/dayjs@1.11.10/dayjs.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/antd@5.12.2/dist/antd.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@antv/g2plot@2.4.31/dist/g2plot.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/ant-design-icons/4.7.0/index.umd.min.js"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/antd@5.12.2/dist/reset.min.css">
+</head>
+ 
+<body>
+    <div id="root"></div>
+    <script type="text/babel">
+        const root = ReactDOM.createRoot(document.querySelector('#root'));
+        
+        const { Space, Input, Button, Layout, icons } = antd;
+        const { Header, Content } = Layout;
+       
+
+        function DynamicChart({
+            chartType,
+            realTime,
+            container,
+            data,
+            tooltip,
+            xField,
+            yField,
+            visible,
+            text,
+            descriptionText,
+            descriptionVisible,
+            forceFit,
+            padding,
+            smooth,
+            width,
+            height
+        }) {
+            React.useEffect(() => {
+                const Plot = new G2Plot[chartType](document.getElementById(container), {
+                    title: {
+                        visible: visible,
+                        text: text,
+                    },
+                    description: {
+                        visible: descriptionVisible,
+                        text: descriptionText,
+                    },
+                    padding: padding,
+                    forceFit: forceFit,
+                    data,
+                    xField: xField,
+                    yField: yField,
+                    smooth: smooth,
+                    width: width,
+                    height: height,
+                    point: {
+                        visible: true,
+                    },
+
+                });
+
+                Plot.render();
+
+                // Simuliere Echtzeitaktualisierung alle 2 Sekunden
+                if (realTime) {
+                    const interval = setInterval(() => {
+                        // Aktualisiere die Daten
+                        data = data.map(item => ({ ...item, y: item.y + Math.random() - 0.5 }));
+                        // Rufe die changeData-Methode auf
+                        Plot.changeData(data);
+                    }, 500);
+
+                    // Aufräumen, wenn die Komponente unmounted wird
+                    return () => clearInterval(interval);
+                }
+
+                // Aufräumen, wenn die Komponente unmounted wird
+                return () => Plot.destroy();
+            }, [chartType, realTime, container, data, tooltip, xField, yField, visible, text, descriptionText, descriptionVisible, forceFit, padding, smooth,width,height]);
+
+            // Hier kannst du die JSX-Komponente zurückgeben, die das Diagramm enthält, falls gewünscht
+            return <div id={container} />;
+        }
+
+        function App() {
+            const data = [
+                { x: '1991', y: 3 },
+                { x: '1992', y: 4 },
+                { x: '1993', y: 3.5 },
+                { x: '1994', y: 5 },
+                { x: '1995', y: 4.9 },
+                { x: '1996', y: 6 },
+                { x: '1997', y: 7 },
+                { x: '1998', y: 9 },
+                { x: '1999', y: 13 },
+            ];
+            return (
+                <div>
+                    <Layout style={{ width: '400px', padding: '20px', background: '#fff' }}>
+                        <Header style={{ background: '#fff', textAlign: 'center', padding: 0 }}>
+                            <h1>Hello From ReactJs </h1>
+                        </Header>
+                        <Content>
+                            <Space direction="vertical">
+                                <Input placeholder="Placeholder text" style={{ width: 200 }} />
+                                <Button type="primary">Primary Button</Button>
+                                <DynamicChart
+                                    chartType="Line" // Hier könnte der Typ des Diagramms sein, den du verwenden möchtest (z. B. 'Line', 'Bar', etc.)
+                                    realTime={false}
+                                    container="chart-container"
+                                    data={data}
+                                    xField="x"
+                                    yField="y"
+                                    visible={true}
+                                    text="Dynamic Chart"
+                                    descriptionText="Real-time updating chart"
+                                    descriptionVisible={true}
+                                    forceFit={true}
+                                    padding="auto"
+                                    smooth={true}
+                                    height={400}
+                                    width={1000}
+                                />
+                            </Space>
+                        </Content>
+                    </Layout>
+                </div>
+            );
+        }
+
+        root.render(<App />);
+    </script>
+</body>
+</html>
