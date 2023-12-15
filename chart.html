@@ -241,6 +241,37 @@ function DynamicChart({
         },
     });
 
+    --------------------------------------
+Plot.render();
+
+    if (realTime) {
+        var socket = new WebSocket(websocketUrl);
+
+        socket.addEventListener('open', function (event) {
+            console.log('WebSocket-Verbindung geöffnet');
+        });
+
+        socket.addEventListener('message', function (event) {
+            // Hier wird angenommen, dass die empfangenen Daten im JSON-Format sind
+            var newData = JSON.parse(event.data);
+
+            // Aktualisiere die Daten und rufe die changeData-Methode auf
+            Plot.changeData(newData);
+        });
+
+        socket.addEventListener('close', function (event) {
+            console.log('WebSocket-Verbindung geschlossen');
+        });
+
+        window.addEventListener('beforeunload', function () {
+            socket.close();
+        });
+    }
+
+    return Plot;
+}
+    --------------------------------------
+
     Plot.render();
 
     if (realTime) {
