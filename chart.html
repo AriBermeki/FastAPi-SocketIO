@@ -171,3 +171,92 @@
     </script>
 </body>
 </html>
+
+<!-- 
+function DynamicChart({
+    chartType,
+    realTime,
+    container,
+    data,
+    xField,
+    yField,
+    visible,
+    text,
+    descriptionText,
+    descriptionVisible,
+    forceFit,
+    padding,
+    smooth,
+    width,
+    height
+}) {
+    var Plot = new G2Plot[chartType](document.getElementById(container), {
+        title: {
+            visible: visible,
+            text: text,
+        },
+        description: {
+            visible: descriptionVisible,
+            text: descriptionText,
+        },
+        padding: padding,
+        forceFit: forceFit,
+        data: data,
+        xField: xField,
+        yField: yField,
+        smooth: smooth,
+        theme: 'dark',
+        width: width,
+        height: height,
+        point: {
+            visible: true,
+        },
+        legend: {
+            visible: true,
+            position: 'bottom-center',
+            flipPage: false,
+        },
+        seriesField: '',
+        responsive: false,
+        animation: true,
+        yAxis: {},
+        xAxis: {},
+        binField: 'x',
+        angleField: 'x',
+        colorField: 'category',
+        binNumber: 10,
+        color: '',
+        meta: {
+            x: {
+                alias: '类别',
+            },
+            y: {
+                alias: '金额',
+            },
+        },
+        min: 0,
+        max: 0,
+        tooltip: {
+            visible: false,
+        },
+    });
+
+    Plot.render();
+
+    if (realTime) {
+        var interval = setInterval(function () {
+            data = data.map(function (item) {
+                return { ...item, y: item.y + Math.random() - 0.5 };
+            });
+            Plot.changeData(data);
+        }, 500);
+
+        window.addEventListener('beforeunload', function () {
+            clearInterval(interval);
+        });
+    }
+
+    return Plot;
+}
+
+-->
