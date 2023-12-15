@@ -60,10 +60,40 @@
                     xField: xField,
                     yField: yField,
                     smooth: smooth,
+                    theme: 'dark',
                     width: width,
                     height: height,
                     point: {
                         visible: true,
+                    },
+                    legend: {
+                        visible: true,
+                        position: 'bottom-center',
+                        flipPage: false,
+                    },
+                    seriesField: '',
+                    responsive: false,
+                    animation: true,
+                    yAxis:{},
+                    xAxis:{},
+                    binField: 'x',
+                    angleField: 'x',
+                    
+                    colorField: 'category',
+                    binNumber: 10,
+                    color:'',
+                    meta: {
+                        x: {
+                        alias: '类别',
+                        },
+                        y: {
+                        alias: '金额',
+                        },
+                    },
+                    min:0,
+                    max:0,
+                    tooltip: {
+                        visible: false,
                     },
 
                 });
@@ -114,8 +144,8 @@
                                 <Input placeholder="Placeholder text" style={{ width: 200 }} />
                                 <Button type="primary">Primary Button</Button>
                                 <DynamicChart
-                                    chartType="Line" // Hier könnte der Typ des Diagramms sein, den du verwenden möchtest (z. B. 'Line', 'Bar', etc.)
-                                    realTime={false}
+                                    chartType="Line" // suportet type [TinyLine,TinyColumn,RingProgress,Bullet,Gauge,Line, Bar, Column, Area, Scatter,Waterfall,Rose,Radar,Heatmap,Funnel,Treemap, Liquid]
+                                    realTime={true}
                                     container="chart-container"
                                     data={data}
                                     xField="x"
