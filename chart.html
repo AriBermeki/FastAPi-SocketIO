@@ -29,26 +29,45 @@
         function DynamicChart({
             chartType,
             realTime,
-            container,
+            container_id,
             data,
             tooltip,
             xField,
             yField,
-            visible,
-            text,
+            title_visible,
+            title_text,
             descriptionText,
             descriptionVisible,
             forceFit,
             padding,
             smooth,
             width,
-            height
+            height,
+            theme,
+            seriesField,
+            legend_position,
+            responsive,
+            animation,
+            xAxis,
+            yAxis,
+            legend_visible,
+            angleField,
+            colorField,
+            meta,
+            binNumber,
+            color,
+            point_visible,
+            min,
+            max,
+            tooltip_visible,
+            legend_flipPage
+            
         }) {
             React.useEffect(() => {
-                const Plot = new G2Plot[chartType](document.getElementById(container), {
+                const Plot = new G2Plot[chartType](document.getElementById(container_id), {
                     title: {
-                        visible: visible,
-                        text: text,
+                        visible:title_visible,
+                        text:title_text,
                     },
                     description: {
                         visible: descriptionVisible,
@@ -60,40 +79,32 @@
                     xField: xField,
                     yField: yField,
                     smooth: smooth,
-                    theme: 'dark',
+                    theme: theme,
                     width: width,
                     height: height,
                     point: {
-                        visible: true,
+                        visible: point_visible,
                     },
                     legend: {
-                        visible: true,
-                        position: 'bottom-center',
-                        flipPage: false,
+                        visible: legend_visible,
+                        position:legend_position,
+                        flipPage: legend_flipPage,
                     },
-                    seriesField: '',
-                    responsive: false,
-                    animation: true,
-                    yAxis:{},
-                    xAxis:{},
-                    binField: 'x',
-                    angleField: 'x',
-                    
-                    colorField: 'category',
-                    binNumber: 10,
-                    color:'',
-                    meta: {
-                        x: {
-                        alias: '类别',
-                        },
-                        y: {
-                        alias: '金额',
-                        },
-                    },
-                    min:0,
-                    max:0,
+                    seriesField: seriesField,
+                    responsive: responsive,
+                    animation: animation,
+                    yAxis:yAxis,
+                    xAxis:xAxis,
+                    binField: binField,
+                    angleField: angleField,
+                    colorField: colorField,
+                    binNumber: binNumber,
+                    color:color,
+                    meta: meta,
+                    min:min,
+                    max:max,
                     tooltip: {
-                        visible: false,
+                        visible: tooltip_visible,
                     },
 
                 });
@@ -115,10 +126,44 @@
 
                 // Aufräumen, wenn die Komponente unmounted wird
                 return () => Plot.destroy();
-            }, [chartType, realTime, container, data, tooltip, xField, yField, visible, text, descriptionText, descriptionVisible, forceFit, padding, smooth,width,height]);
+            }, [
+                legend_flipPage,
+                point_visible,
+                color,
+                binNumber,
+                meta,
+                colorField,
+                angleField,
+                legend_visible,
+                chartType,
+                animation,
+                theme,
+                responsive,
+                seriesField,
+                legend_position,
+                realTime, 
+                container_id, 
+                data, 
+                tooltip_visible, 
+                xField, 
+                yField, 
+                title_visible, 
+                title_text, 
+                descriptionText, 
+                descriptionVisible, 
+                forceFit, 
+                padding, 
+                smooth,
+                width,
+                height,
+                yAxis,
+                xAxis,
+                min,
+                max
+            ]);
 
             // Hier kannst du die JSX-Komponente zurückgeben, die das Diagramm enthält, falls gewünscht
-            return <div id={container} />;
+            return <div id={container_id} />;
         }
 
         function App() {
