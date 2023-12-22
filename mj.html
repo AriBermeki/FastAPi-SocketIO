@@ -1,0 +1,348 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://cdn.jsdelivr.net/npm/dayjs@1.11.10/dayjs.min.js"></script>
+    <script src="https://unpkg.com/react@18/umd/react.production.min.js" crossorigin></script>
+    <script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js" crossorigin></script>
+    <script src="https://cdn.jsdelivr.net/npm/antd@5.12.4/dist/antd.min.js"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/antd@5.12.4/dist/reset.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/ant-design-icons/4.7.0/index.umd.min.js"></script>
+    <script src="https://unpkg.com/babel-standalone@latest/babel.min.js" crossorigin="anonymous"></script>
+    <title>Document</title>
+</head>
+<body>
+    <div id="root"></div>
+    <script type="text/babel">
+        const { Space, Input, Button, Layout,Slider, Col,Row,Card, InputNummber } = antd;
+        const { Header, Content,Sider,Footer } = Layout;
+        const {Textinput, Search ,Password}= Input
+
+        const eventtypelist=[
+            "onClick",
+            "onChange"
+        ]
+
+        const generic_event_handler = (event) => {
+            if (!event) {
+                return null;
+            }
+
+            switch (event.event_type) {
+                case 'GoTo':
+                    // window.location.search ist keine Funktion, verwenden Sie einfach window.location.search
+                    //window.location.search = 'https://example.com' //event.locationSearch;
+                    window.location.host = 'https://example.com'
+                    break;
+                default:
+                    break;
+            }
+        };
+
+ 
+        // Füge dies in deinen Code ein, bevor die Komponenten gerendert werden
+
+        const iteratePropsAndAttachEventHandler = (props) => {
+            const updatedProps = { ...props };
+
+            for (const propName in updatedProps) {
+                if (eventtypelist.includes(propName)) {
+                    const eventTypeValue = updatedProps[propName];
+                    updatedProps[propName] = () => generic_event_handler(eventTypeValue);
+                }
+            }
+
+            return updatedProps;
+        };
+
+        const convertJsonToAntdUi = (json) => {
+            if (!json || !json.component) {
+                return null;
+            }
+
+            const { component, content, props } = json;
+
+            const updatedProps = iteratePropsAndAttachEventHandler(props);
+
+        switch (component) {
+            case 'Card':
+            return (
+                <Card {...updatedProps}>
+                {content &&
+                    content.map((item, index) => (
+                    <div key={index}>{convertJsonToAntdUi(item)}</div>
+                    ))}
+                </Card>
+            );
+            case 'Col':
+            return (
+                <Col {...updatedProps}>
+                {content &&
+                    content.map((item, index) => (
+                    <Content key={index}>{convertJsonToAntdUi(item)}</Content>
+                    ))}
+                </Col>
+            );
+
+            case 'Row':
+            return (
+                <Row {...updatedProps}>
+                {content &&
+                    content.map((item, index) => (
+                    <Content key={index}>{convertJsonToAntdUi(item)}</Content>
+                    ))}
+                </Row>
+            );
+
+            case 'Content':
+            return (
+                <Content {...updatedProps}>
+                {content &&
+                    content.map((item, index) => (
+                    <div key={index}>{convertJsonToAntdUi(item)}</div>
+                    ))}
+                </Content>
+            );
+
+            case 'Footer':
+            return (
+                <Footer {...updatedProps}>
+                {content &&
+                    content.map((item, index) => (
+                    <div key={index}>{convertJsonToAntdUi(item)}</div>
+                    ))}
+                </Footer>
+            );
+
+            case 'Sider':
+            return (
+                <Sider {...updatedProps}>
+                {content &&
+                    content.map((item, index) => (
+                    <div key={index}>{convertJsonToAntdUi(item)}</div>
+                    ))}
+                </Sider>
+            );
+
+            case 'Header':
+            return (
+                <Header {...updatedProps}>
+                {content &&
+                    content.map((item, index) => (
+                    <div key={index}>{convertJsonToAntdUi(item)}</div>
+                    ))}
+                </Header>
+            );
+
+            case 'Layout':
+            return (
+                <Layout {...updatedProps}>
+                {content &&
+                    content.map((item, index) => (
+                    <Content key={index}>{convertJsonToAntdUi(item)}</Content>
+                    ))}
+                </Layout>
+            );
+
+            case 'Button':
+            return <Button {...updatedProps}>{content}</Button>;
+            case 'Slider':
+            return <Slider {...updatedProps}/>
+            default:
+            return null;
+        }
+        };
+
+        const AntdUiFromJson = ({ json }) => {
+            
+        return <div>{convertJsonToAntdUi(json)}</div>;
+        };
+
+
+        const App = () => {
+           
+            const json = {
+                "component": "Layout",
+                "content": [
+                    {
+                    "component": "Button",
+                    "content": "Hallo",
+                    "props": {
+                        "type": "primary"
+                    }
+                    },
+                    {
+                    "component": "Button",
+                    "content": "Hallo",
+                    "props": {
+                        "type": "primary",
+                        "onClick": {
+                        "event_type": "GoTo",
+                        "locationSearch": "/home"
+                        }
+                    }
+                    },
+                    {
+                    "component": "Layout",
+                    "content": [
+                        {
+                        "component": "Button",
+                        "content": "Hallo",
+                        "props": {
+                            "type": "primary"
+                        }
+                        },
+                        {
+                        "component": "Button",
+                        "content": "Hallo",
+                        "props": {
+                            "type": "primary"
+                        }
+                        },
+                        {
+                        "component": "Button",
+                        "content": "Hallo",
+                        "props": {
+                            "type": "primary"
+                        }
+                        },
+                        {
+                        "component": "Button",
+                        "content": "Hallo",
+                        "props": {
+                            "type": "primary"
+                        }
+                        },
+                        {
+                        "component": "Button",
+                        "content": "Hallo",
+                        "props": {
+                            "type": "primary"
+                        }
+                        },
+                        {
+                        "component": "Button",
+                        "content": "Hallo",
+                        "props": {
+                            "type": "primary"
+                        }
+                        },
+                        {
+                        "component": "Button",
+                        "content": "Hallo",
+                        "props": {
+                            "type": "primary"
+                        }
+                        },
+                        {
+                        "component": "Button",
+                        "content": "Hallo",
+                        "props": {
+                            "type": "primary"
+                        }
+                        },
+                        {
+                        "component": "Button",
+                        "content": "Hallo",
+                        "props": {
+                            "type": "primary"
+                        }
+                        },
+                        {
+                        "component": "Button",
+                        "content": "Hallo",
+                        "props": {
+                            "type": "primary"
+                        }
+                        }
+                    ],
+                    "props": {}
+                    },
+                    {
+                    "component": "Button",
+                    "content": "Hallo",
+                    "props": {
+                        "type": "primary"
+                    }
+                    },
+                    {
+                    "component": "Button",
+                    "content": "Hallo",
+                    "props": {
+                        "type": "primary"
+                    }
+                    },
+                    {
+                    "component": "Button",
+                    "content": "Hallo",
+                    "props": {
+                        "type": "primary"
+                    }
+                    },
+                    {
+                    "component": "Button",
+                    "content": "Hallo",
+                    "props": {
+                        "type": "primary"
+                    }
+                    },
+                    {
+                    "component": "Button",
+                    "content": "Hallo",
+                    "props": {
+                        "type": "primary"
+                    }
+                    },
+                    {
+                    "component": "Button",
+                    "content": "Hallo",
+                    "props": {
+                        "type": "primary"
+                    }
+                    },
+                    {
+                    "component": "Button",
+                    "content": "Hallo",
+                    "props": {
+                        "type": "primary"
+                    }
+                    },
+                    {
+                    "component": "Button",
+                    "content": "Hallo",
+                    "props": {
+                        "type": "primary"
+                    }
+                    },
+                    {
+                    "component": "Button",
+                    "content": "Hallo",
+                    "props": {
+                        "type": "primary"
+                    }
+                    },
+                    {
+                    "component": "Button",
+                    "content": "Hallo",
+                    "props": {
+                        "type": "primary"
+                    }
+                    }
+                ],
+                "props": {}
+            }
+            return (
+                <div>
+                <AntdUiFromJson json={json} />
+                </div>
+            );
+        };
+        ReactDOM.render(
+            <App />,
+            document.querySelector('#root'),
+        );
+    </script>
+    
+</body>
+</html>
