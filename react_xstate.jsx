@@ -1,7 +1,19 @@
 import React from 'react';
 import { useMachine } from '@xstate/react';
 import { createMachine } from 'xstate'; // Änderung hier
+/*  
+import React, { useEffect } from 'react';
+import axios from 'axios';
+import io from 'socket.io-client';
+import { createActor, createMachine, assign } from 'xstate';
+import { useMachine } from '@xstate/react';
 
+
+
+const actor = createActor(stateMachine, { context: initialState }).start();
+const [state, send] = useMachine(stateMachine, { context: initialState });
+createMachine(config);
+*/
 const createStateMachine = (config) => {
   return createMachine(config); // Änderung hier
 };
